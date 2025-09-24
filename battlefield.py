@@ -6,11 +6,10 @@ class Battlefield:
     @staticmethod
     def create_battlefield(gridsquare):
         field = []
-        row = []
-
-        for o in range (gridsquare):
-            row.append(0)
+        
         for i in range(gridsquare):
+            row = []
+            row = [0]*10
             field.append(row)
         return field
     
@@ -27,7 +26,22 @@ class Battlefield:
             print(row,i)
             i += 1
 
+    @staticmethod
+    def collision_checker(coordinates,field):
+        for i,value in enumerate(coordinates):
+            if field[value[1]][value[0]] == 1:
+                collision = True
+                return collision
 
-    def add_ship():
-        print() 
+        return False
+
+    def add_ship(player,index):
+        print(f"\n...Adding ship number : {index + 1} ...")
+        for i in player.ship_list[index].coordinate:
+            print(i,end="\n")
+            column = i[0]-1
+            row = i[1]-1
+            print(player.field[row][column])
+            player.field[row][column] = 1
+
 

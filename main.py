@@ -1,7 +1,7 @@
-from place_a_ship import place_a_ship, footprint_processing
+from game_manager import Game_manager
 from battlefield import Battlefield
 from player import Player
-from collision_checker import collision_checker
+from ship import Ship
 
 print("Hello, Welcome to battleship.\n Press the enter key to start")
 a = input()
@@ -16,15 +16,15 @@ Battlefield.print_field(player_field)
 #asking how many ships to play with
 print("How many ships would you like to play with, (1-5)")
 while True:
-        try:
-            no_of_ships = int(input("Number of ships : "))
-        except:
-            print("-----invalid input-----\n")
+    try:
+        no_of_ships = int(input("Number of ships : "))
+    except:
+        print("-----invalid input-----\n")
+    else:
+        if no_of_ships < 1 or no_of_ships > 5:
+            print("Please choose a number between 1 and 5\n")
         else:
-            if no_of_ships < 1 or no_of_ships > 5:
-                print("Please choose a number between 1 and 5\n")
-            else:
-                break
+            break
             
 a = input()
 
@@ -35,10 +35,15 @@ player = Player(player_field)
 
 #asking coords
 for i in range(no_of_ships):
-
-    temp_coordinate = place_a_ship()
-    coordinate_list = footprint_processing(temp_coordinate)
-    collision = collision_checker(coordinate_list,player_field)
-    print(collision)
-
-    
+    collision = True
+    while collision == True:
+        collision = False
+        temp_coordinate = Game_manager.promt_placement()
+        coordinate_list = Ship.footprint_processing(temp_coordinate)
+        collision = Battlefield.collision_checker(coordinate_list,player_field)
+        if collision == False:
+            Ship.add_coordinate(player,coordinate_list)
+            Battlefield.add_ship(player,i)
+        else:
+            print("-----Invalid ship placement-----\n")
+        Battlefield.print_field(player.field)
